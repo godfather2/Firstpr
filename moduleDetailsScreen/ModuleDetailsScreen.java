@@ -114,6 +114,7 @@ public class ModuleDetailsScreen extends CoreScreenLayer {
     private UIButton updateModuleButton;
     private UIText description;
     private UIButton close;
+    final UIList<ModuleSelectionInfo2> dependencyList = find("dependencies", UIList.class);
 
     @Override
     public void initialise() {
@@ -288,7 +289,14 @@ public class ModuleDetailsScreen extends CoreScreenLayer {
 
             @Override
             public void draw(DependencyInfo value, Canvas canvas) {
-                if (moduleManager.getRegistry().getLatestModuleVersion(value.getId()) == null) {
+                ModuleSelectionInfo2 m=dependencyList.getSelection();
+                String version= m.getMetadata().getVersion().toString();
+                String max=value.getMaxVersion().toString();
+                String min=value.getMinVersion().toString();
+                int N=max.charAt(0);
+                int n=min.charAt(0);
+                int Version=version.charAt(0);
+                if(Version<n||Version>N){
                     canvas.setMode("invalid");
                 } else {
                     canvas.setMode("available");
